@@ -1,66 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## 1. Migration
+**- Lệnh tạo migration**
+```cmd
+php artisan make:migration create_tableName_table
+```
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**- Run migration**
+```cmd
+php artisan migrate
+php artisan migrate --path=database\migrations\fileName.php
+```
 
-## About Laravel
+**- Rolling back**
+```cmd
+php artisan migrate:rollback
+php artisan migrate:rollback --step=3
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**- Reset**
+```cmd
+php artisan migrate:reset
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**- Refresh (rollback + migrate)**
+```cmd
+php artisan migrate:refresh
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**- Fresh (drop all table and migrate)**
+```cmd
+php artisan migrate:fresh
+```
+ 
+## 2. Create table
+```php
+Schema::create('users', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->timestamps();
+});
+```
 
-## Learning Laravel
+**+ Các kiểu dữ liệu cơ bản**
+```text
++ string($column, $length = 255): Một chuỗi ký tự có độ dài tối đa là 255 ký tự.
++ text($column): Một chuỗi văn bản dài, thường dùng cho các nội dung dài như mô tả.
++ integer($column, $autoIncrement = false, $unsigned = false): Một số nguyên.
++ bigInteger($column, $autoIncrement = false, $unsigned = false): Một số nguyên lớn.
++ tinyInteger($column, $autoIncrement = false, $unsigned = false): Một số nguyên nhỏ.
++ smallInteger($column, $autoIncrement = false, $unsigned = false): Một số nguyên nhỏ hơn so với integer.
++ mediumInteger($column, $autoIncrement = false, $unsigned = false): Một số nguyên lớn hơn smallInteger nhưng nhỏ hơn bigInteger.
++ boolean($column): Một giá trị boolean (true hoặc false).
++ decimal($column, $total = 8, $places = 2): Một số thập phân với tổng số chữ số và số chữ số thập phân cụ thể.
++ float($column, $total = 8, $places = 2): Một số thực với tổng số chữ số và số chữ số thập phân cụ thể.
++ double($column, $total = null, $places = null): Một số thực lớn hơn float.
++ binary($column): Một chuỗi nhị phân.
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**+ Kiểu dữ liệu ngày giờ**
+```text
++ date($column): Một ngày (không bao gồm thời gian).
++ dateTime($column, $precision = 0): Ngày và thời gian.
++ dateTimeTz($column, $precision = 0): Ngày và thời gian với múi giờ.
++ time($column, $precision = 0): Thời gian (không bao gồm ngày).
++ timeTz($column, $precision = 0): Thời gian với múi giờ.
++ timestamp($column, $precision = 0): Dấu thời gian (bao gồm ngày và thời gian).
++ timestampTz($column, $precision = 0): Dấu thời gian với múi giờ.
++ year($column): Một năm (4 chữ số).
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**+ Các kiểu dữ liệu khác**
+```text
++ enum($column, array $allowed): Một chuỗi với giá trị từ danh sách các giá trị cho trước.
++ json($column): Một chuỗi JSON.
+```
 
-## Laravel Sponsors
+**+ Tùy chọn**
+```text
++ nullable(): Cho phép cột nhận giá trị null.
++ default($value): Đặt giá trị mặc định cho cột.
++ unsigned(): Đặt cột là số nguyên không dấu.
++ unique(): Đảm bảo giá trị trong cột là duy nhất.
++ index(): Tạo chỉ mục cho cột.
++ primary(): Đặt cột làm khoá chính.
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**+ Một số điều kiện và lệnh khác**
+```php
+Schema::hasTable('users')
+Schema::hasColumn('users', 'email')
+Schema::hasIndex('users', ['email'], 'unique')
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+$table->charset('utf8mb4');
+$table->collation('utf8mb4_unicode_ci');
+$table->comment('Business calculations');
+```
 
-## Contributing
+## 3. Updating Tables
+```cmd
+php artisan make:migration update_tableName_table 
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```php
+Schema::table('users', function (Blueprint $table) {
+    $table->string('name', 250);
+});
+```
 
-## Code of Conduct
+```php
+// Rename and drop column
+$table->renameColumn('from', 'to');
+$table->dropColumn(['votes', 'avatar', 'location']);
+// Rename and drop table  
+Schema::rename($from, $to);
+Schema::drop('users');
+// Lưu ý đối với drop table ta nên tạo 1 migration mới cho công việc này
+// php artisan make:migration drop_tableName_table
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## 4. Foreign Key Constraints
+```php
+$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 5. Bài tập
+```text
+1. Tạo bảng products (
+    id: increments
+    name: string(200)
+    price: float(8, 2)
+    view: integer,
+    timestamp
+)
+
+2. Tạo bảng product_comment(
+    id: increments,
+    userId: integer (unsigned) --foreign
+    productId: integer (unsigned) --foreign
+    comment: string(500)
+    timestamp
+)
+3. Tạo bảng log(
+    id: increments,
+    content_log: string(20),
+    timestamp
+)
+
+4. Chạy migrate tạo 3 bảng trên
+5. Tạo migration cập nhật bảng product(
+    name: string(250)
+    rename: from price to product_price
+)
+6. Chạy migrate update
+7. Rollback migrate vừa rồi
+8. Delete column view in product table
+9. Reset All migration
+10. Delete log table + run migrate
+```
