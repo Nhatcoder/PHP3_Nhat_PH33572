@@ -9,19 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('table_nguoidung', function (Blueprint $table) {
-            $table->id();
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id('order_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->float('totalPrice', 10, 2);
+
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_nguoidung');
+        Schema::dropIfExists('orders');
     }
 };

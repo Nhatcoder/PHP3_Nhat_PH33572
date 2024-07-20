@@ -9,17 +9,17 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 200);
-            $table->float('price', 8, 2);
-            $table->integer('view')->default(0);
-
+            $table->id('product_id');
+            $table->string('name', 20);
             $table->timestamps();
+            $table->string('description', 500)->nullable();
+            $table->float('price', 10, 2)->default(800.02);
         });
     }
+
 
     /**
      * Reverse the migrations.
